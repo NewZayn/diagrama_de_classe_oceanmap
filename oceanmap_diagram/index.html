@@ -12,11 +12,99 @@
 <body>
     <h2>Meu Diagrama Mermaid</h2>
     <div class="mermaid">
-    graph TD;
-        A-->B;
-        A-->C;
-        B-->D;
-        C-->D;
+        classDiagram
+        direction BT
+        
+        class User {
+          + Long id
+          + String name
+          + String email
+          + String password
+          + Boolean active
+          + Date created
+          + Date updated
+          + Profile profile
+        }
+        
+        class Profile {
+          + Long id
+          + String address
+          + String zipcode
+          + String city
+          + String state
+          + String photo
+          + Date created
+          + Date updated
+        }
+        
+        class UserHistory {
+          + Long id
+          + LocalDateTime searchDate
+          + String beachAddress
+          + User user
+        }
+        
+        class UnsafeArea {
+          + Long id
+          + String name
+          + String latitude
+          + String longitude
+          + String state
+          + double radius
+        }
+        
+        class ThreatObject {
+          + Long id
+          + String description
+          + String threatLevel
+          + Date reportedDate
+          + UnsafeArea area
+        }
+        
+        class UserService {
+          + findByEmail(String) Boolean
+          + findById(Long) User
+          + findAll() List~User~
+          + save(User) void
+          + deleteUser(Long) void
+          + login(UserLoged) UserDTO
+        }
+        
+        class ProfileService {
+          + findById(Long) Profile
+          + updateProfile(Profile) void
+          + changeAddress(Long, String) void
+          + changePhoto(Long, String) void
+        }
+        
+        class UserHistoryService {
+          + addHistory(UserHistory) void
+          + getHistoryByUserId(Long) List~UserHistory~
+          + deleteHistory(Long) void
+          + clearHistoryForUser(Long) void
+        }
+        
+        class UnsafeAreaService {
+          + findById(Long) UnsafeArea
+          + findAll() List~UnsafeArea~
+          + addUnsafeArea(UnsafeArea) void
+          + updateUnsafeArea(Long, UnsafeArea) void
+          + deleteUnsafeArea(Long) void
+          + addThreat(Long, ThreatObject) void
+          + removeThreat(Long, Long) void
+          + listThreats(Long) List~ThreatObject~
+        }
+        
+        User "1" --> "1" Profile : "has"
+        User "1" --> "0..*" UserHistory : "has many"
+        UserHistory "1" --> "1" User : "belongs to"
+        UnsafeArea "1" --> "0..*" ThreatObject : "contains"
+        UserService --> User : "manages"
+        ProfileService --> Profile : "manages"
+        UserHistoryService --> UserHistory : "manages"
+        UnsafeAreaService --> UnsafeArea : "manages"
+        UnsafeAreaService --> ThreatObject : "manages threats"
+        
     </div>
 </body>
 </html>
